@@ -92,6 +92,12 @@ if (typeof console==='undefined'){
 			setTimeout(function(){$t.css({backgroundColor:'blue'});}, 6000);
 			setTimeout(function(){$t.css({backgroundColor:origbg});}, 9000);
 
+			alert(
+				'If the main content background color change, write \n#'+$(e.target).html()+'\n in the Content Selector field'+
+				'\n\n'+
+				'If the sidebar background color change, write \n#'+$(e.target).html()+'\n in the Sidebar Selector field'
+			);
+
 		});
 	};
 })(jQuery);
