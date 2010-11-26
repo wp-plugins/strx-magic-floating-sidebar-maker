@@ -130,6 +130,14 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
     $rv.=strx_floating_sidebar_settings_checkbox('outline',$outline,
 			'<b>OUTLINE</b>: If checked and you are loggin in, will outline with a dotted red line the sections you have identified as content and sidebar, '.
 			'helping you know if they are right','');
+
+	$rv.=   '<tr><td><b>If you like this plugin</b> help me spread and improve it. How? Simple: '.
+                    '<a target="_blank" href="http://wordpress.org/extend/plugins/strx-magic-floating-sidebar-maker/">rate it with 5 stars and say it works</a>, '.
+                    'subscribe to my feed by <a target="_blank" href="http://feedburner.google.com/fb/a/mailverify?uri=StrxBlog">email</a> or <a href="http://feeds.feedburner.com/StrxBlog" target="blank">any other client</a>, '.
+                    '<a target="_blank" href="http://twitter.com/fstraps">follow me on twitter</a>, '.
+                    '<a target="_blank" href="http://www.strx.it/donate">make a donation</a>. Thank you.'.
+                '</td></tr>';
+
     $rv.='  <tr><td><p class="submit"><input type="submit" name="Submit" class="button-primary" value="Save Changes" /></p></td></tr>';
     $rv.='  </table>';
     $rv.=' </form>';
