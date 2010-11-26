@@ -4,7 +4,7 @@ Donate link: http://www.strx.it/donate
 Tags: sidebar, magic, floating, earnings, ads, money
 Requires at least: 2.0
 Tested up to: 3.0.1
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 
 Magic Floating Sidebar Maker, makes your bog sidebar floatable.
 
