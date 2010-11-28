@@ -9,10 +9,10 @@ if (typeof console==='undefined'){
     strx.start=function(opts){
         $(function(){
             opts=$.extend({}, {content:'#content', sidebar:'#sidebar', wait:3000, debounce:500, animate:3000, offsetTop:0, offsetBottom:0, debug:0, outline:0, findids:0}, opts);
-            var $w=$(window), $c=$(opts.content), $s=$(opts.sidebar), $b=$('body');
+            var $w=$(window), $c=$(opts.content), $ss=$(opts.sidebar), $b=$('body');
 
             if (opts.outline){
-                $s.add($c).css('outline','3px dashed  red');
+                $ss.add($c).css('outline','3px dashed  red');
             }
 
 			if (opts.findids){
@@ -21,54 +21,59 @@ if (typeof console==='undefined'){
 
 			console.dir(opts);
 
-			if ($c.length && $s.length){
-				if ($c.height() > $s.height()){
-					setTimeout(function(){
-						$s.parent().css('position','relative');
-						$s.css({position:'absolute',left:$s.position().left+'px',top:$s.position().top+'px'})
-							.find('.widget').css('position','relative');
+			if ($c.length && $ss.length){
+				$ss.each(function(){
+					(function($s){
+						if ($c.height() > $s.height()){
+							setTimeout(function(){
+								$s.parent().css('position','relative');
+								$s.css({position:'absolute',left:$s.position().left+'px',top:$s.position().top+'px'})
+									.find('.widget').css('position','relative');
 
-						var lastScrollY=-1,
-							sidebarTop=$s.position().top,
-							offsetTop=$s.offset().top-sidebarTop,
-							maxTop=sidebarTop+$c.height()-$s.outerHeight(),
-							onScroll=function(e){
-								var scrollY=$w.scrollTop(), t,
-									scrollingDown=scrollY>lastScrollY;
+								var lastScrollY=-1,
+									sidebarTop=$s.position().top,
+									offsetTop=$s.offset().top-sidebarTop,
+									maxTop=sidebarTop+$c.height()-$s.outerHeight(),
+									onScroll=function(e){
+										var scrollY=$w.scrollTop(), t,
+											scrollingDown=scrollY>lastScrollY;
 
-								if ((scrollingDown && scrollY>sidebarTop+offsetTop && scrollY+$w.height()>$s.position().top+$s.height()+offsetTop-sidebarTop) ||
-									(!scrollingDown && scrollY<$s.position().top+offsetTop) ){
-									if (e.type==='scroll' && ($w.height()>$s.height() || !scrollingDown)){
-										//Scorrimento verso l'alto
-										t=Math.max(sidebarTop,scrollY-(offsetTop)+ (~~opts.offsetTop) );
-									}else{
-										//Scorrimento verso il basso o resize
-										t=Math.max(sidebarTop, scrollY + $w.height() - $s.outerHeight() - offsetTop - (~~opts.offsetBottom) );
-									}
-									//console.log('scroll top='+t);
-									t=Math.min(t, maxTop);
-									$s.stop().animate({top:t+'px'}, ~~opts.animate);
+										if ((scrollingDown && scrollY>sidebarTop+offsetTop && scrollY+$w.height()>$s.position().top+$s.height()+offsetTop-sidebarTop) ||
+											(!scrollingDown && scrollY<$s.position().top+offsetTop) ){
+											if (e.type==='scroll' && ($w.height()>$s.height() || !scrollingDown)){
+												//Scorrimento verso l'alto
+												t=Math.max(sidebarTop,scrollY-(offsetTop)+ (~~opts.offsetTop) );
+											}else{
+												//Scorrimento verso il basso o resize
+												t=Math.max(sidebarTop, scrollY + $w.height() - $s.outerHeight() - offsetTop - (~~opts.offsetBottom) );
+											}
+											//console.log('scroll top='+t);
+											t=Math.min(t, maxTop);
+											$s.stop().animate({top:t+'px'}, ~~opts.animate);
 
-									if (opts.debug){
-										window.scrollY=scrollY;
-										console.log('top='+t+', scrollY='+scrollY);
-									}
+											if (opts.debug){
+												window.scrollY=scrollY;
+												console.log('top='+t+', scrollY='+scrollY);
+											}
+										}
+										lastScrollY=scrollY;
+									};
+								if (opts.debug){
+									window.$w=$w; window.$c=$c; window.$s=$s; window.$b=$b; window.offsetTop=offsetTop; window.sidebarTop=sidebarTop; window.maxTop=maxTop;
+									console.log('windowHeight='+$w.height()+', sidebarOuterHeight='+$s.outerHeight()+', sidebarTop='+sidebarTop+', offsetTop='+offsetTop+', maxTop='+maxTop);
 								}
-								lastScrollY=scrollY;
-							};
-						if (opts.debug){
-							window.$w=$w; window.$c=$c; window.$s=$s; window.$b=$b; window.offsetTop=offsetTop; window.sidebarTop=sidebarTop; window.maxTop=maxTop;
-							console.log('windowHeight='+$w.height()+', sidebarOuterHeight='+$s.outerHeight()+', sidebarTop='+sidebarTop+', offsetTop='+offsetTop+', maxTop='+maxTop);
-						}
 
-						if (opts.debounce && Function.prototype.debounce){
-							onScroll=onScroll.debounce(opts.debounce);
-						}
+								if (opts.debounce && Function.prototype.debounce){
+									onScroll=onScroll.debounce(opts.debounce);
+								}
 
-						$w.scroll(onScroll).resize(onScroll);
-						onScroll({type:'scroll'});
-					},opts.wait);
-				}
+								$w.scroll(onScroll).resize(onScroll);
+								onScroll({type:'scroll'});
+							},opts.wait);
+						}
+					})($(this));
+				});
+
 			}else{
 				if ($c.length===0){console.log(opts.content+' not found');}
 				if ($s.length===0){console.log(opts.sidebar+' not found');}
