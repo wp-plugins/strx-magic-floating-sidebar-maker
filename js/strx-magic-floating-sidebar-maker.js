@@ -5,11 +5,11 @@ if (typeof console==='undefined'){
 	console={log:function(){}, dir:function(){}};
 }
 
-(function($){
+(function(){
     strx.start=function(opts){
-        $(function(){
-            opts=$.extend({}, {content:'#content', sidebar:'#sidebar', wait:3000, debounce:500, animate:3000, offsetTop:0, offsetBottom:0, debug:0, outline:0, findids:0}, opts);
-            var $w=$(window), $c=$(opts.content), $ss=$(opts.sidebar), $b=$('body');
+        jQuery(function(){
+            opts=jQuery.extend({}, {content:'#content', sidebar:'#sidebar', wait:3000, debounce:500, animate:3000, offsetTop:0, offsetBottom:0, debug:0, outline:0, findids:0}, opts);
+            var $w=jQuery(window), $c=jQuery(opts.content), $ss=jQuery(opts.sidebar), $b=jQuery('body');
 
             if (opts.outline){
                 $ss.add($c).css('outline','3px dashed  red');
@@ -71,7 +71,7 @@ if (typeof console==='undefined'){
 								onScroll({type:'scroll'});
 							},opts.wait);
 						}
-					})($(this));
+					})(jQuery(this));
 				});
 
 			}else{
@@ -83,12 +83,12 @@ if (typeof console==='undefined'){
     };
 	//Help user find the correct content and sidebar divs
 	strx.findids=function(){
-		var divs=$('div[id]').get();
-		divs=$.map(divs, function(d){
+		var divs=jQuery('div[id]').get();
+		divs=jQuery.map(divs, function(d){
 			return '<span class="strx-mfsm-findids" style="cursor:pointer; font-weight:bold;">'+d.id+'</span>';
 		});
-		var $divs=$('<span>'+divs.join('&nbsp;&nbsp;')+'</span>').appendTo('body').click(function(e){
-			var $t=$('#'+$(e.target).html());
+		var $divs=jQuery('<span>'+divs.join('&nbsp;&nbsp;')+'</span>').appendTo('body').click(function(e){
+			var $t=jQuery('#'+jQuery(e.target).html());
 			//console.log($t.html());
 
 			var origbg=$t.css('background-color');
@@ -98,11 +98,11 @@ if (typeof console==='undefined'){
 			setTimeout(function(){$t.css({backgroundColor:origbg});}, 9000);
 
 			alert(
-				'If the main content background color change, write \n#'+$(e.target).html()+'\n in the Content Selector field'+
+				'If the main content background color change, write \n#'+jQuery(e.target).html()+'\n in the Content Selector field'+
 				'\n\n'+
-				'If the sidebar background color change, write \n#'+$(e.target).html()+'\n in the Sidebar Selector field'
+				'If the sidebar background color change, write \n#'+jQuery(e.target).html()+'\n in the Sidebar Selector field'
 			);
 
 		});
 	};
-})(jQuery);
+})();
