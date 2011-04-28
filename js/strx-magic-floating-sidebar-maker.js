@@ -48,7 +48,7 @@ if (typeof console==='undefined'){
 												t=Math.max(sidebarTop, scrollY + $w.height() - $s.outerHeight() - offsetTop - (~~opts.offsetBottom) );
 											}
 											//console.log('scroll top='+t);
-											t=Math.min(t, maxTop);
+											t=Math.min(t, opts.dynamicTop?(sidebarTop+$c.height()-$s.outerHeight()):maxTop);
 											$s.stop().animate({top:t+'px'}, ~~opts.animate);
 
 											if (opts.debug){

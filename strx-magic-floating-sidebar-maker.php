@@ -3,7 +3,7 @@
 Plugin Name: Strx Magic Floating Sidebar Maker
 Plugin URI: http://www.strx.it
 Description: Makes your blog sidebar floatable
-Version: 1.0
+Version: 1.1
 Author: Strx
 Author URI: http://www.strx.it
 License: GPL2
@@ -20,7 +20,8 @@ function strx_floating_sidebar_defaults(){
         'offsetBottom'=>0,
         'debug'=>0,
         'outline'=>0,
-		'findids'=>0
+		    'findids'=>0,
+		    'dynamicTop'=>false
     );
 }
 
@@ -119,6 +120,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			'<b>Offset Top</b>; lets you adjust settings for a pixel perfect result; accepts positive and negative values','small-text');
     $rv.=strx_floating_sidebar_settings_input('offsetBottom',$offsetBottom,
 			'<b>Offset Bottom</b>','small-text');
+	  $rv.=strx_floating_sidebar_settings_checkbox('dynamicTop',$dynamicTop,
+			  '<b>dynamicTop</b>: Needed if you page length change dynamically, using Ajax, css or other methods','');
 
 	$rv.='<tr><td><div>'.$affiliates[array_rand($affiliates)].'</div></td></tr>';
 
