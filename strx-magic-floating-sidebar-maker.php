@@ -3,7 +3,7 @@
 Plugin Name: Strx Magic Floating Sidebar Maker
 Plugin URI: http://www.strx.it
 Description: Makes your blog sidebar floatable
-Version: 1.1
+Version: 1.2
 Author: Strx
 Author URI: http://www.strx.it
 License: GPL2
@@ -21,7 +21,8 @@ function strx_floating_sidebar_defaults(){
         'debug'=>0,
         'outline'=>0,
 		    'findids'=>0,
-		    'dynamicTop'=>false
+		    'dynamicTop'=>false,
+		    'jsInHead'=>false
     );
 }
 
@@ -122,6 +123,8 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			'<b>Offset Bottom</b>','small-text');
 	  $rv.=strx_floating_sidebar_settings_checkbox('dynamicTop',$dynamicTop,
 			  '<b>dynamicTop</b>: Needed if you page length change dynamically, using Ajax, css or other methods','');
+	  $rv.=strx_floating_sidebar_settings_checkbox('jsInHead',$jsInHead,
+			  '<b>jsInHead</b>: Put javascript in header instead of footer (some wp themes does not support wp_footer action)','');
 
 	$rv.='<tr><td><div>'.$affiliates[array_rand($affiliates)].'</div></td></tr>';
 
@@ -158,7 +161,10 @@ if ( !is_admin() ) {
     wp_enqueue_script('debounce');
     wp_enqueue_script('strx-magic-floating-sidebar-maker');
 
-    add_action('wp_footer','strx_floating_sidebar_start');
+    //add_action('wp_footer','strx_floating_sidebar_start');
+    $o=strx_floating_sidebar_get_options();
+    add_action( ($o['jsInHead']?'wp_head':'wp_footer') , 'strx_floating_sidebar_start');
+    
 }else{
     add_action('admin_menu', 'strx_floating_sidebar_settings_menu');
 }
