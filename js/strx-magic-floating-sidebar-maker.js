@@ -20,7 +20,8 @@ if (typeof console === 'undefined') {
         offsetBottom: 0,
         debug: 0,
         outline: 0,
-        findids: 0
+        findids: 0,
+        minHDiff:0
       }, opts);
 
       setTimeout(function(){
@@ -43,7 +44,8 @@ if (typeof console === 'undefined') {
 	      if ($c.length && $ss.length) {
 	        $ss.each(function () {
 	          (function ($s) {
-	            if ($c.height() > $s.height()) {
+	          	console.log($c.height() - $s.height());
+	            if ( $c.height() - $s.height() > opts.minHDiff || opts.dynamicTop) {
                 $s.parent().css('position', 'relative');
                 $s.css({
                   position: 'absolute',
@@ -101,7 +103,6 @@ if (typeof console === 'undefined') {
                 });
 
                 $w.scroll(function(){
-                	console.log('scroll without debounce');
                 	$s.stop();
                 });
 

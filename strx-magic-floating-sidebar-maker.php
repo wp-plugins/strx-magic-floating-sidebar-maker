@@ -3,7 +3,7 @@
 Plugin Name: Strx Magic Floating Sidebar Maker
 Plugin URI: http://www.strx.it
 Description: Makes your blog sidebar floatable
-Version: 1.3.1
+Version: 1.4
 Author: Strx
 Author URI: http://www.strx.it
 License: GPL2
@@ -22,7 +22,8 @@ function strx_floating_sidebar_defaults(){
         'outline'=>0,
 		    'findids'=>0,
 		    'dynamicTop'=>false,
-		    'jsInHead'=>false
+		    'jsInHead'=>false,
+        'minHDiff'=>0
     );
 }
 
@@ -41,7 +42,7 @@ function strx_floating_sidebar_start(){
 		$opts['debug']=0;
 		$opts['outline']=0;
 	}
-    echo '<script type="text/javascript">strx.start('.json_encode($opts).');</script>';    
+    echo '<script type="text/javascript">strx.start('.json_encode($opts).');</script>';
 }
 
 function strx_floating_sidebar_settings_menu(){
@@ -97,7 +98,7 @@ function strx_floating_sidebar_settings(){
 			'then click on ids displayed to identify them');
     $rv.=strx_floating_sidebar_settings_input('sidebar',$sidebar,
 			'<b>Sidebar Selector</b>');
-	
+
 $rv.='<tr><td><div><script type="text/javascript"><!--
 google_ad_client = "pub-8907793348376201";
 /* 468x60, per plugin e widget wp */
@@ -118,9 +119,11 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
     $rv.=strx_floating_sidebar_settings_input('animate',$animate,
 			'<b>Animate Speed</b> in Milliseconds; how much time will the sidebar take to go to align itself with the content','small-text');
     $rv.=strx_floating_sidebar_settings_input('offsetTop',$offsetTop,
-			'<b>Offset Top</b>; lets you adjust settings for a pixel perfect result; accepts positive and negative values','small-text');
+      '<b>Offset Top</b>; lets you adjust settings for a pixel perfect result; accepts positive and negative values','small-text');
     $rv.=strx_floating_sidebar_settings_input('offsetBottom',$offsetBottom,
-			'<b>Offset Bottom</b>','small-text');
+      '<b>Offset Bottom</b>','small-text');
+    $rv.=strx_floating_sidebar_settings_input('minHDiff',$minHDiff,
+			'<b>Minimum Height Difference</b>; if (container height - sidebar height < minHDiff) then the plugin is not activated; if <i>dynamicTop</i> is checked, this option is not considered','small-text');
 	  $rv.=strx_floating_sidebar_settings_checkbox('dynamicTop',$dynamicTop,
 			  '<b>dynamicTop</b>: Needed if you page length change dynamically, using Ajax, css or other methods','');
 	  $rv.=strx_floating_sidebar_settings_checkbox('jsInHead',$jsInHead,
@@ -164,7 +167,7 @@ if ( !is_admin() ) {
     //add_action('wp_footer','strx_floating_sidebar_start');
     $o=strx_floating_sidebar_get_options();
     add_action( ($o['jsInHead']?'wp_head':'wp_footer') , 'strx_floating_sidebar_start');
-    
+
 }else{
     add_action('admin_menu', 'strx_floating_sidebar_settings_menu');
 }
