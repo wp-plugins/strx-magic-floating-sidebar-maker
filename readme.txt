@@ -3,8 +3,8 @@ Contributors: strx
 Donate link: http://www.strx.it/donate
 Tags: sidebar, magic, floating, earnings, ads, money
 Requires at least: 2.0
-Tested up to: 3.1.2
-Stable tag: 1.2
+Tested up to: 3.3.2
+Stable tag: 1.3
 
 Magic Floating Sidebar Maker, makes your bog sidebar floatable.
 
@@ -37,6 +37,9 @@ Upload the plugin to your blog, Activate it, add to the sidebar from the Widgets
 [Here](http://www.strx.it/2010/11/wordpress-floating-sidebar-plugin/).
 
 == Changelog ==
+
+= 1.3 =
+* Statusbar check bugfix, smarter scroll handling, opts.wait timeout now is before checking dom elements (in case they are loaded via Ajax)
 
 = 1.2 =
 * Added jsInHead option to load javascript stuff in head instead of footer; some wp themes don't support wp_footer action
