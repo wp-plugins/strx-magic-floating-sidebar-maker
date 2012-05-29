@@ -44,67 +44,73 @@ if (typeof console === 'undefined') {
 	      if ($c.length && $ss.length) {
 	        $ss.each(function () {
 	          (function ($s) {
-	          	console.log($c.height() - $s.height());
+	          	// console.log($c.height() - $s.height());
 	            if ( $c.height() - $s.height() > opts.minHDiff || opts.dynamicTop) {
                 $s.parent().css('position', 'relative');
-                $s.css({
-                  position: 'absolute',
-                  left: $s.position().left + 'px',
-                  top: $s.position().top + 'px'
-                }).find('.widget').css('position', 'relative');
+                var initialSPos=$s.position(),
+                		initialSOff=$s.offset();
 
-                var lastScrollY = -1,
-                  sidebarTop = $s.position().top,
-                  offsetTop = $s.offset().top - sidebarTop,
-                  maxTop = sidebarTop + $c.height() - $s.outerHeight(),
-                  onScroll = function (e) {
-                    var scrollY = $w.scrollTop(),
-                      t, scrollingDown = scrollY > lastScrollY;
+                //Recupero Top e Left iniziali di tutte le sidebar prima di iniziare il posizionamento
+                setTimeout(function(){
+	                $s.css({
+	                  position: 'absolute',
+	                  left: initialSPos.left + 'px',
+	                  top:  initialSPos.top  + 'px'
+	                }).find('.widget').css('position', 'relative');
 
-                    if ((scrollingDown && scrollY > sidebarTop + offsetTop && scrollY + $w.height() > $s.position().top + $s.height() + offsetTop - sidebarTop) || (!scrollingDown && scrollY < $s.position().top + offsetTop)) {
-                      if (e.type === 'scroll' && ($w.height() > $s.height() || !scrollingDown)) {
-                        //Scorrimento verso l'alto
-                        t = Math.max(sidebarTop, scrollY - (offsetTop) + (~~opts.offsetTop));
-                      } else {
-                        //Scorrimento verso il basso o resize
-                        t = Math.max(sidebarTop, scrollY + $w.height() - $s.outerHeight() - offsetTop - (~~opts.offsetBottom));
-                      }
+	                var lastScrollY = -1,
+	                  sidebarTop = initialSPos.top,
+	                  offsetTop = initialSOff.top - sidebarTop,
+	                  maxTop = sidebarTop + $c.height() - $s.outerHeight(),
+	                  onScroll = function (e) {
+	                    var scrollY = $w.scrollTop(),
+	                      t, scrollingDown = scrollY > lastScrollY;
 
-                      t = Math.min(t, opts.dynamicTop ? (sidebarTop + $c.height() - $s.outerHeight()) : maxTop);
-                      $s.stop().animate({
-                        top: t + 'px'
-                      }, ~~opts.animate);
+	                    if ((scrollingDown && scrollY > sidebarTop + offsetTop && scrollY + $w.height() > $s.position().top + $s.height() + offsetTop - sidebarTop) || (!scrollingDown && scrollY < $s.position().top + offsetTop)) {
+	                      if (e.type === 'scroll' && ($w.height() > $s.height() || !scrollingDown)) {
+	                        //Scorrimento verso l'alto
+	                        t = Math.max(sidebarTop, scrollY - (offsetTop) + (~~opts.offsetTop));
+	                      } else {
+	                        //Scorrimento verso il basso o resize
+	                        t = Math.max(sidebarTop, scrollY + $w.height() - $s.outerHeight() - offsetTop - (~~opts.offsetBottom));
+	                      }
 
-                      if (opts.debug) {
-                        window.scrollY = scrollY;
-                        console.log('top=' + t + ', scrollY=' + scrollY);
-                      }
-                    }
-                    lastScrollY = scrollY;
-                  };
-                if (opts.debug) {
-                  window.$w = $w;
-                  window.$c = $c;
-                  window.$s = $s;
-                  window.$b = $b;
-                  window.offsetTop = offsetTop;
-                  window.sidebarTop = sidebarTop;
-                  window.maxTop = maxTop;
-                  console.log('windowHeight=' + $w.height() + ', sidebarOuterHeight=' + $s.outerHeight() + ', sidebarTop=' + sidebarTop + ', offsetTop=' + offsetTop + ', maxTop=' + maxTop);
-                }
+	                      t = Math.min(t, opts.dynamicTop ? (sidebarTop + $c.height() - $s.outerHeight()) : maxTop);
+	                      $s.stop().animate({
+	                        top: t + 'px'
+	                      }, ~~opts.animate);
 
-                if (opts.debounce && Function.prototype.debounce) {
-                  onScroll = onScroll.debounce(opts.debounce);
-                }
+	                      if (opts.debug) {
+	                        window.scrollY = scrollY;
+	                        console.log('top=' + t + ', scrollY=' + scrollY);
+	                      }
+	                    }
+	                    lastScrollY = scrollY;
+	                  };
+	                if (opts.debug) {
+	                  window.$w = $w;
+	                  window.$c = $c;
+	                  window.$s = $s;
+	                  window.$b = $b;
+	                  window.offsetTop = offsetTop;
+	                  window.sidebarTop = sidebarTop;
+	                  window.maxTop = maxTop;
+	                  console.log('windowHeight=' + $w.height() + ', sidebarOuterHeight=' + $s.outerHeight() + ', sidebarTop=' + sidebarTop + ', offsetTop=' + offsetTop + ', maxTop=' + maxTop);
+	                }
 
-                $w.scroll(onScroll).resize(onScroll);
-                onScroll({
-                  type: 'scroll'
-                });
+	                if (opts.debounce && Function.prototype.debounce) {
+	                  onScroll = onScroll.debounce(opts.debounce);
+	                }
 
-                $w.scroll(function(){
-                	$s.stop();
-                });
+	                $w.scroll(onScroll).resize(onScroll);
+	                onScroll({
+	                  type: 'scroll'
+	                });
+
+	                $w.scroll(function(){
+	                	$s.stop();
+	                });
+                },0);
 
 	            }
 	          })(jQuery(this));

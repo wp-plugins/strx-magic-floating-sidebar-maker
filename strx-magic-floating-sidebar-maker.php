@@ -3,7 +3,7 @@
 Plugin Name: Strx Magic Floating Sidebar Maker
 Plugin URI: http://www.strx.it
 Description: Makes your blog sidebar floatable
-Version: 1.4
+Version: 1.4.1
 Author: Strx
 Author URI: http://www.strx.it
 License: GPL2
